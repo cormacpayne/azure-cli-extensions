@@ -470,6 +470,10 @@ class ContainerApp(Resource):  # pylint: disable=too-many-instance-attributes
             logger.debug(f"Determined the run image to use as {buildpack_run_image}.")
             command.extend(['--run-image', buildpack_run_image])
 
+        # If the user specifies a target port, pass it to the buildpack
+        if self.target_port:
+            command.extend(['--env', f"PORT={self.target_port}"])
+
         logger.debug(f"Calling '{' '.join(command)}'")
         try:
             is_non_supported_platform = False
